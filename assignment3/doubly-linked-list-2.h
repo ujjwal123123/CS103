@@ -35,13 +35,18 @@ int print(NODE* pnode)
         return -1;
     }
 
+    // while (pnode) {
+    //     printf("%d ", pnode->data);
+
+    //     if (pnode->next)
+    //         pnode = pnode->next;
+    //     else
+    //         break;
+    // }
+
     while (pnode) {
         printf("%d ", pnode->data);
-
-        if (pnode->next)
-            pnode = pnode->next;
-        else
-            break;
+        pnode = pnode->next;
     }
 
     printf("\n");
@@ -278,6 +283,7 @@ int removeByValue(NODE** ppnode, DATA key)
     return removePos(ppnode, pos);
 }
 
+// TODO: This function is not working
 // // Reverse the elements in the list outplace
 // NODE* reverseOutplace(NODE* pnode)
 // {
@@ -300,3 +306,129 @@ int removeByValue(NODE** ppnode, DATA key)
 
 //     return reversedList;
 // }
+
+// Reverse the elements in the list without creating a new list
+int reverseInplace(NODE** ppnode)
+{
+    NODE* pnode = *ppnode;
+
+    while (pnode) {
+        // swap next and prev
+        NODE* temp = pnode->next;
+        pnode->next = pnode->prev;
+        pnode->prev = temp;
+
+        if (pnode->prev)
+            pnode = pnode->prev;
+        else {
+            *ppnode = pnode;
+            break;
+        }
+    }
+
+    return 0;
+}
+
+// insert an element in a sorted list such that the final list is also sorted
+int insertIntoSorted(NODE** ppnode, DATA Data)
+{
+    if (*ppnode == NULL)
+        addFirst(ppnode, Data);
+
+    NODE* pnode = *ppnode;
+    int pos = 0;
+    while (pnode->data < Data) {
+        pos++;
+
+        if (pnode->next) {
+            pnode = pnode->next;
+        } else {
+            addLast(ppnode, Data);
+            return 0;
+        }
+    }
+
+    addPos(ppnode, Data, pos);
+
+    return 0;
+}
+
+// TODO: implement sort
+// sort the elements in a list
+// int sort(NODE** ppnode)
+// {
+
+// }
+
+// change first list by appending second list to it
+int mergeList(NODE* pnode1, NODE* pnode2)
+{
+    while(pnode1 && pnode1->next) {
+        pnode1 = pnode1->next;    
+    }
+
+    pnode1->next = pnode2;
+
+    return 0;
+}
+
+// print list using recursion
+int printRecursive(NODE* pnode)
+{
+    if (pnode) {
+        printf("%d ", pnode->data);
+        return printRecursive(pnode->next);
+    }
+    printf("\n");
+    return 0;
+}
+
+// print list in reverse order using recursion
+int printReverseRecursion(NODE* pnode) {
+    if (pnode == NULL)
+        return 0;
+
+    printReverseRecursion(pnode->next);
+
+    printf("%d ", pnode->data);
+
+    return 0;
+}
+
+// // reverse the list using recursion
+// int reverseListRecursion(NODE* pnode) {
+//     if (pnode == NULL)
+//         return 0;
+
+//     reverseListRecursion()
+// }
+
+// the linked list clockwise by n modulo l nodes, where l is the length of the list
+int rotateList(NODE** ppnode, int offset)
+{
+    // convert this list into a circular list
+    NODE* head = *ppnode;
+
+    {
+        NODE* pnode = *ppnode;
+        while (pnode) {
+            if (pnode->next)
+                pnode = pnode->next;
+            else
+                break;
+        }
+
+        pnode->next = head;
+    }
+
+    {
+        NODE* pnode = head;
+        while (--offset) {
+            pnode = pnode->next;
+        }
+
+        *ppnode = pnode->next;
+        pnode->next = NULL;
+    }
+    return 0;
+}

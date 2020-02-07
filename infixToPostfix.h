@@ -4,7 +4,9 @@
 
 int opPrecedence(char ch)
 {
-    if (ch == '/')
+    if (ch == '^')
+        return 5;
+    else if (ch == '/')
         return 4;
     else if (ch == '*')
         return 3;
@@ -41,11 +43,19 @@ int convertToPostFix(char* infix)
 
     // TODO: add support for expressions with bracket
     while (*infix != '\0') {
+
+        // if (*infix == '(')
+        //     push(&output, *infix);
+
+        // else if (*infix == ')')
+        //     ;
+
+
         if (isAlpha(*infix))
             push(&output, *infix);
 
         else if (isOperator(*infix)) {
-            while (!isEmpty(operators) && opPrecedence(*infix) <= opPrecedence(access(operators)))
+            while (!isEmpty(operators) && opPrecedence(*infix) <= opPrecedence(peek(operators)))
                 push(&output, pop(&operators));
 
             push(&operators, *infix);
@@ -58,11 +68,15 @@ int convertToPostFix(char* infix)
         push(&output, pop(&operators));
     }
 
+    STACK orderCorrect = NULL;
+    orderCorrect = reverse(output);
+
     // TODO: correct order in which output is printed
-    prints(output);
+    prints(orderCorrect);
 
     // TODO: free output stack
     free(operators);
+    free(output);
 
     return 0;
 }

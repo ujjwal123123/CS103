@@ -56,12 +56,12 @@ int prints(STACK stack)
     return 0;
 }
 
-DATA access(STACK stack)
+DATA peek(STACK stack)
 {
     if (stack)
         return (stack->data);
     else {
-        fprintf(stderr, "Call to access failed. Stack is empty.\n");
+        fprintf(stderr, "Call to peek failed. Stack is empty.\n");
         return -1;
     }
 }
@@ -84,4 +84,22 @@ int emptyStack(STACK stack)
     }
 
     return 0;
+}
+
+NODE* reverse(NODE* head)
+{
+    NODE* pnode = head;
+
+    STACK reversed = NULL;
+    while (pnode) {
+        push(&reversed, pnode->data);
+
+        if (pnode->next)
+            pnode = pnode->next;
+        else
+            break;
+        
+    }
+
+    return reversed;
 }

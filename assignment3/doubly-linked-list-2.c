@@ -13,13 +13,26 @@ int main()
     print(new);
     printf("Length: %d\n", length(new));
 
-    LIST reversed = reverseOutplace(new);
-    printf("\n");
-    // printf("%d\n", removeByValue(&new, 10));
-    printf("\n");
+    
+    // LIST new1 = NULL;
 
-    print(reversed);
-    printf("Length: %d\n", length(new));
+    // addFirst(&new1, 6);
+    // addFirst(&new1, 7);
+    // addFirst(&new1, 8);
+    // addFirst(&new1, 9);
 
+    // print(new1);
+    // printf("Length: %d\n", length(new1));
+
+    // mergeList(new, new1);
+
+    // printRecursive(new);
+    // printReverseRecursion(new);
+    // printf("\nLength: %d\n", length(new));
+    
+
+    rotateList(&new, 3);
+
+    print(new);
     return 0;
 }

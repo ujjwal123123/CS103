@@ -4,21 +4,21 @@ int main()
 {
     LIST list1 = NULL;
 
-    prepend(&list1, 5);
-    prepend(&list1, 4);
-    prepend(&list1, 3);
-    prepend(&list1, 2);
-    prepend(&list1, 1);
-    prepend(&list1, 0);
-    append(&list1, 6);
-    append(&list1, 7);
+    addFirst(&list1, 5);
+    addFirst(&list1, 4);
+    addFirst(&list1, 3);
+    addFirst(&list1, 2);
+    addFirst(&list1, 1);
+    addFirst(&list1, 0);
+    addLast(&list1, 6);
+    addLast(&list1, 7);
 
     print(list1);
     printf("\n\n%d\n\n", length(list1));
 
-    printUsingRecursion(list1);
+    reverseListRecursion(list1);
 
-    printf("\n\n");
+    print(list1);
 
-    printUsingRecursion(list1);
+    return 0;
 }

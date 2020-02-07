@@ -11,7 +11,7 @@ typedef struct node {
 typedef NODE* LIST;
 
 // The function adds a new element to the beginning of the list. This function should be passed pointer to a list
-int prepend(LIST* plist, DATA Data)
+int addFirst(LIST* plist, DATA Data)
 {
     NODE* new = (NODE*)malloc(sizeof(NODE));
     new->data = Data;
@@ -23,7 +23,7 @@ int prepend(LIST* plist, DATA Data)
 }
 
 // This function should be passed pointer to a list
-int append(LIST* plist, DATA Data)
+int addLast(LIST* plist, DATA Data)
 {
     NODE* new = (NODE*)malloc(sizeof(NODE));
     new->data = Data;
@@ -53,7 +53,7 @@ int length(LIST list)
 }
 
 // deletes first element of the list and returns its value
-DATA popFirst(LIST* plist)
+DATA deleteFirst(LIST* plist)
 {
     // check if the list is empty
     if (*plist) {
@@ -75,7 +75,7 @@ DATA popFirst(LIST* plist)
     }
 }
 
-DATA popLast(LIST* plist)
+DATA deleteLast(LIST* plist)
 {
     NODE* pNode = *plist;
 
@@ -137,7 +137,7 @@ int add(LIST* plist, DATA Data, int index)
 }
 
 // Remove node at index passed to the function
-DATA pop(LIST* plist, int index)
+DATA delete(LIST* plist, int index)
 {
     NODE** ppNode = plist;
 
@@ -228,3 +228,36 @@ int printUsingRecursion(LIST list)
 
     return 0;
 }
+
+// print list in reverse order using recursion
+int printReverseRecursion(NODE* pnode)
+{
+    if (pnode == NULL)
+        return 0;
+
+    printReverseRecursion(pnode->next);
+
+    printf("%d ", pnode->data);
+
+    return 0;
+}
+
+// // reverse list using recursion
+// NODE* reverseListRecursion(NODE* pnode) 
+// {
+//     // copy pasted from geeksforgeeks
+
+//     if (pnode == NULL)
+//         return NULL;
+//     if (pnode->next == NULL) {
+//         head = pnode;
+//         return pnode;
+//     }
+
+//     NODE* temp = reverseListRecursion(pnode->next);
+//     temp->next = pnode;
+//     pnode->next = NULL
+
+//     return pnode
+
+// }
