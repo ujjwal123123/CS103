@@ -290,10 +290,11 @@ LIST reverseOutplace(LIST pnode)
     LIST* pReversedList = (LIST*)malloc(sizeof(LIST));
 
     while (pnode) {
-        if (pnode->next) {
-            addFirst(pReversedList, pnode->data);
+        addFirst(pReversedList, pnode->data);
+
+        if (pnode->next)
             pnode = pnode->next;
-        } else
+        else
             break;
     }
 
@@ -413,11 +414,26 @@ int rotateList(NODE** ppnode, int offset)
 }
 
 // sorts linked list using selection sort
-// int sort(LIST* plist)
-// {
-//     if (plist->head->)
-//         return 0;
+int sort(NODE** ppnode)
+{
+    // handle trivial cases
+    if (*ppnode == NULL || (*ppnode)->next == NULL)
+        return 0;
 
-//     NODE* i = plist->head;
-//     while
-// }
+    for (NODE* i = *ppnode; i != NULL; i = i->next) {
+        NODE* min = i;
+
+        for (NODE* j = i->next; j != NULL; j = j->next)
+            if (j->data < min->data)
+                min = j;
+
+        // swap
+        if (min != i) {
+            DATA temp = i->data;
+            i->data = min->data;
+            min->data = temp;
+        }
+    }
+
+    return 0;
+}
