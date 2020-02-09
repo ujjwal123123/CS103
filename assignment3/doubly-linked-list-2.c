@@ -5,15 +5,14 @@ int main()
     LIST new = NULL;
 
     addFirst(&new, 5);
-    addFirst(&new, 4);
-    addFirst(&new, 3);
-    addFirst(&new, 2);
-    addFirst(&new, 1);
+    // addFirst(&new, 4);
+    // addFirst(&new, 3);
+    // addFirst(&new, 2);
+    // addFirst(&new, 1);
 
     print(new);
     printf("Length: %d\n", length(new));
 
-    
     // LIST new1 = NULL;
 
     // addFirst(&new1, 6);
@@ -29,10 +28,13 @@ int main()
     // printRecursive(new);
     // printReverseRecursion(new);
     // printf("\nLength: %d\n", length(new));
-    
 
-    rotateList(&new, 3);
+    LIST reversed = reverseOutplace(new);
 
+    printf("Old list is: ");
     print(new);
+
+    printf("Reversed list is: ");
+    print(reversed);
     return 0;
 }

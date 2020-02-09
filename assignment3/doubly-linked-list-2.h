@@ -284,28 +284,21 @@ int removeByValue(NODE** ppnode, DATA key)
 }
 
 // TODO: This function is not working
-// // Reverse the elements in the list outplace
-// NODE* reverseOutplace(NODE* pnode)
-// {
-//     // traverse to the end
-//     while (pnode) {
-//         if (pnode->next)
-//             pnode = pnode->next;
-//         else
-//             break;
-//     }
+// Reverse the elements in the list outplace
+LIST reverseOutplace(LIST pnode)
+{
+    LIST* pReversedList = (LIST*)malloc(sizeof(LIST));
 
-//     LIST reversedList = NULL;
-//     while (pnode) {
-//         if (pnode->prev) {
-//             addFirst(&reversedList, pnode->data);
-//             pnode = pnode->prev;
-//         } else
-//             break;
-//     }
+    while (pnode) {
+        if (pnode->next) {
+            addFirst(pReversedList, pnode->data);
+            pnode = pnode->next;
+        } else
+            break;
+    }
 
-//     return reversedList;
-// }
+    return *pReversedList;
+}
 
 // Reverse the elements in the list without creating a new list
 int reverseInplace(NODE** ppnode)
@@ -353,18 +346,11 @@ int insertIntoSorted(NODE** ppnode, DATA Data)
     return 0;
 }
 
-// TODO: implement sort
-// sort the elements in a list
-// int sort(NODE** ppnode)
-// {
-
-// }
-
 // change first list by appending second list to it
 int mergeList(NODE* pnode1, NODE* pnode2)
 {
-    while(pnode1 && pnode1->next) {
-        pnode1 = pnode1->next;    
+    while (pnode1 && pnode1->next) {
+        pnode1 = pnode1->next;
     }
 
     pnode1->next = pnode2;
@@ -384,7 +370,8 @@ int printRecursive(NODE* pnode)
 }
 
 // print list in reverse order using recursion
-int printReverseRecursion(NODE* pnode) {
+int printReverseRecursion(NODE* pnode)
+{
     if (pnode == NULL)
         return 0;
 
@@ -394,14 +381,6 @@ int printReverseRecursion(NODE* pnode) {
 
     return 0;
 }
-
-// // reverse the list using recursion
-// int reverseListRecursion(NODE* pnode) {
-//     if (pnode == NULL)
-//         return 0;
-
-//     reverseListRecursion()
-// }
 
 // the linked list clockwise by n modulo l nodes, where l is the length of the list
 int rotateList(NODE** ppnode, int offset)
@@ -432,3 +411,13 @@ int rotateList(NODE** ppnode, int offset)
     }
     return 0;
 }
+
+// sorts linked list using selection sort
+// int sort(LIST* plist)
+// {
+//     if (plist->head->)
+//         return 0;
+
+//     NODE* i = plist->head;
+//     while
+// }

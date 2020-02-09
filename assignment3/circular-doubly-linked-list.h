@@ -43,6 +43,7 @@ static int addIfSingle(LIST* plist, DATA Data)
     NODE* new = newNode(plist->tail, Data, plist->tail);
 
     plist->head = new;
+    // plist->tail = new;
     plist->tail->next = new;
     plist->tail->prev = new;
 
@@ -72,7 +73,13 @@ int addFirst(LIST* plist, DATA Data)
 
 int print(LIST list)
 {
+    if (list.head == NULL) {
+        printf("The list is empty. Can't be printed.\n");
+        return -1;
+    }
+
     NODE* pnode = list.head;
+    printf("The list is: ");
     while (1) {
         printf("%d ", pnode->data);
         pnode = pnode->next;
@@ -120,7 +127,7 @@ int length(LIST list)
     return length;
 }
 
-int removeIfSingle(LIST* plist)
+static DATA removeIfSingle(LIST* plist)
 {
     DATA retValue = plist->head->data;
     free(plist->head);
@@ -131,10 +138,10 @@ int removeIfSingle(LIST* plist)
     return retValue;
 }
 
-int removeFirst(LIST* plist)
+DATA removeFirst(LIST* plist)
 {
     if (plist->head == NULL) {
-        fprintf(stderr, "The list is empty\n");
+        fprintf(stderr, "The list is empty. Can't be removed.\n");
         return -1;
     }
 
@@ -148,8 +155,49 @@ int removeFirst(LIST* plist)
 
         plist->head = plist->head->next;
         plist->head->prev = plist->tail;
+        plist->tail->next = plist->head;
         free(delNode);
 
+        printf("Removed from the list: %d\n", retValue);
         return retValue;
     }
+}
+
+int addLast(LIST* plist, DATA Data)
+{
+    if (plist->head == NULL) {
+        return addIfSingle(plist, Data);
+    }
+
+    NODE* new = newNode(plist->tail, Data, plist->head);
+
+    plist->tail->next = new;
+    plist->head->prev = new;
+
+    return 0;
+}
+
+int removeLast(LIST* plist)
+{
+    if (plist->head == NULL) {
+        fprintf(stderr, "The list is already empty.\n");
+        return -1;
+    }
+
+    if (plist->head == plist->tail) {
+        return removeIfSingle(plist);
+    }
+
+    NODE* removedPtr = plist->tail;
+    DATA removedData = removedPtr->data;
+
+    plist->tail = removedPtr->prev;
+    plist->tail->next = plist->head;
+    plist->head->prev = plist->tail;
+
+    free(removedPtr);
+
+    printf("Removed from the list: %d\n", removedData);
+
+    return removedData;
 }

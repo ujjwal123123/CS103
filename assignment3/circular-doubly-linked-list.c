@@ -10,13 +10,10 @@ int main()
     addFirst(&list, 2);
 
     print(list);
-    printf("%d\n", removeFirst(&list));
+
+    // removeLast(&list);
+
     print(list);
-    printf("%d\n", removeFirst(&list));
-    print(list);
-    printf("%d\n", removeFirst(&list));
-    print(list);
-    printf("%d\n", removeFirst(&list));
-    print(list);
+
     return 0;
 }
