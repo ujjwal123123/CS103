@@ -15,7 +15,7 @@ typedef struct list {
 } LIST;
 
 // create new node
-NODE* newNode(NODE* prev, DATA data, NODE* next)
+static NODE* newNode(NODE* prev, DATA data, NODE* next)
 {
     NODE* new = (NODE*)malloc(sizeof(NODE));
 
@@ -71,6 +71,7 @@ int addFirst(LIST* plist, DATA Data)
     return 0;
 }
 
+// Prints the list
 int print(LIST list)
 {
     if (list.head == NULL) {
