@@ -4,33 +4,33 @@
 typedef int DATA;
 
 typedef struct stack {
-    int* arr;
-    int len;
+    DATA* arr;
+    int capacity;
     int filled;
 } STACK;
 
 STACK newStack(int length)
 {
-    int* array = (int*)malloc(sizeof(int) * length);
-
     STACK* stack = (STACK*)malloc(sizeof(STACK));
-    stack->arr = array;
-    stack->len = length;
+    stack->arr = (int*) malloc(sizeof(int) * length);
+    stack->capacity = length;
     stack->filled = 0;
 
     return *stack;
 }
 
-int push(STACK* stack, DATA Data)
+int isFull(STACK *pstack){
+    return (pstack->filled == pstack->capacity);
+}
+
+int push(STACK* pstack, DATA Data)
 {
-    if (stack->filled == stack->len) {
-        fprintf(stderr, "Stack overflow.\n");
+    if (isFull(pstack)) {
+        fprintf(stderr, "Stacksoverflow.com\n");
         return -1;
     }
 
-    *(stack->arr + stack->filled) = Data;
-
-    stack->filled++;
+    pstack->arr[pstack->filled++] = Data;
 
     return 0;
 }
@@ -45,16 +45,17 @@ int print(STACK stack)
     return 0;
 }
 
-DATA pop(STACK* stack)
+int isEmpty(STACK *pstack)
 {
-    if (stack->filled == 0) {
+    return (pstack->filled == 0);
+}
+
+DATA pop(STACK* pstack)
+{
+    if (isEmpty(pstack)) {
         fprintf(stderr, "Stack underflow.\n");
         return -1;
     }
 
-    DATA ret = *(stack->arr + stack->filled - 1);
-
-    stack->filled--;
-
-    return ret;
+    return pstack->arr[--pstack->filled];
 }
