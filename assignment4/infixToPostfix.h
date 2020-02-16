@@ -1,3 +1,5 @@
+// Convert infix to postfix and evaluate
+
 #include "stacks.h"
 #include <malloc.h>
 #include <stdio.h>
@@ -7,21 +9,28 @@
 
 int precedence(char ch)
 {
-    if (ch == '^')
+    switch (ch) {
+    case '^':
         return 3;
-    else if (ch == '/')
+        break;
+    case '/':
         return 2;
-    else if (ch == '*')
+        break;
+    case '*':
         return 2;
-    else if (ch == '+')
+        break;
+    case '+':
         return 1;
-    else if (ch == '-')
+        break;
+    case '-':
         return 1;
-    else
+        break;
+    default:
         return 0;
+    }
 }
 
-// check for operands
+// check for operands -- a to z, A to Z and 0 to 9
 int isOperand(char ch)
 {
     if (ch >= 'a' && ch <= 'z')
@@ -38,7 +47,7 @@ int associativity(char ch)
 {
     if (ch == '^')
         return RTL;
-    
+
     else if (ch == '*' || ch == '/' || ch == '+' || ch == '-')
         return LTR;
 
@@ -53,47 +62,77 @@ int isOperator(char ch)
 
 int printchararr(char* arr, int length)
 {
-    for (int i = 0; i < length; i++) 
+    for (int i = 0; i < length; i++)
         printf("%c ", arr[i]);
-    
+
     printf("\n");
     return 0;
 }
 
-int evaluateHelper((int) op1, (int) op2, char operand) {
-    if (operand == '/')
-        return op1 / op2;
-    else if (operand == '*')
-        return op1 * op2;
-    else if (operand == '-')
-        return op1 - op2;
-    else if (operand == '+')
-        return op1 + op2;
+int charToInt(char ch)
+{
+    return ch - '0';
 }
 
-int evaluate(int *postfix, int len)
+int exp(int base, int exponent)
 {
+    int ans = 1;
+    while (exponent--) {
+        ans *= base;
+    }
+    return ans;
+}
+
+int evaluateHelper(int op1, int op2, char operand)
+{
+    switch (operand) {
+    case '/':
+        return op1 / op2;
+        break;
+    case '*':
+        return op1 * op2;
+        break;
+    case '-':
+        return op1 - op2;
+        break;
+    case '+':
+        return op1 + op2;
+        break;
+    case '^':
+        return exp(op2, op1);
+        break;
+    default:
+        fprintf(stderr, "Invalid operation\n");
+        return -1;
+    }
+}
+
+int evaluate(char* postfix, int len)
+{
+    // ans is a stack of integers
     STACK ans = NULL;
-    STACK operators = NULL;
 
-    char* ch = postfix;
+    for (char* ch = postfix; ch < postfix + len; ch++) {
+        if (isOperand(*ch))
+            push(&ans, charToInt(*ch));
 
-    if (isOperand(*ch)) {
-        push(&ans, (int)*ch);
-        ch++;
+        else if (isOperator(*ch))
+            push(&ans, evaluateHelper(pop(&ans), pop(&ans), *ch));
+
+        else {
+            fprintf(stderr, "Error occured.\n");
+            return -1;
+        }
     }
 
-    else if (isOperator(*ch)) {
-        push(&ans, evaluateHelper(pop(&ans), pop(&ans), pop(&operators)));
-    }
-
-    return pop(&ans);
+    printf("The ans is :%d\n", pop(&ans));
+    return 0;
 }
 
 char* convertToPostFix(char* infix)
 {
     STACK operators = NULL;
-    char* output = (char*) malloc(sizeof(char) * 100);
+    char* output = (char*)malloc(sizeof(char) * 100);
     int len = 0;
 
     for (char* ch = infix; *ch != '\0'; ch++) {
@@ -105,7 +144,7 @@ char* convertToPostFix(char* infix)
         else if (*ch == ')') {
             while (!isEmpty(operators) && peek(operators) != '(')
                 output[len++] = pop(&operators);
-            
+
             // pop '(' from the stack
             pop(&operators);
         }
@@ -114,7 +153,7 @@ char* convertToPostFix(char* infix)
         else if (isOperand(*ch))
             output[len++] = *ch;
 
-        // if follows right to left associativity
+        // if operator follows right to left associativity
         else if (associativity(*ch) == RTL) {
             while (!isEmpty(operators) && precedence(*ch) < precedence(peek(operators)))
                 output[len++] = pop(&operators);
@@ -122,7 +161,7 @@ char* convertToPostFix(char* infix)
             push(&operators, *ch);
         }
 
-        // operator follows left to right associativity
+        // if operator follows left to right associativity
         else if (associativity(*ch) == LTR) {
             while (!isEmpty(operators) && precedence(*ch) <= precedence(peek(operators)))
                 output[len++] = pop(&operators);
@@ -134,13 +173,13 @@ char* convertToPostFix(char* infix)
     // finally transfer all the leftover operators to output
     while (!isEmpty(operators))
         output[len++] = pop(&operators);
-    
+
     printchararr(output, len);
 
     evaluate(output, len);
 
     // free operators stack and output array
-    free(operators);
+    freeStack(&operators);
     free(output);
 
     return output;

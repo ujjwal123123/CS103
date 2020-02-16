@@ -4,17 +4,13 @@ int main()
 {
     STACK output = NULL;
 
-    // push(&output, 5);
-    // push(&output, 6);
-    // push(&output, 7);
+    push(&output, 5);
+    push(&output, 6);
+    push(&output, 7);
 
-    prints(output);
+    printStackInt(output);
 
-    pop(&output);
+    printStackInt(reverse(output));
 
-    prints(output);
-
-    pop(&output);
-
-    prints(output);
+    printStackInt(output);
 }

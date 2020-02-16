@@ -1,3 +1,5 @@
+// Implementation of stack with linked list
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -34,23 +36,35 @@ int push(STACK* head, DATA Data)
     newNode->data = Data;
 
     *head = newNode;
+    
+    return 0;
+}
+
+int printStackChar(STACK stack)
+{
+    if (!stack) {
+        fprintf(stderr, "The stack is empty.\n");
+        return -1;
+    }
+
+    for (; stack; stack = stack->next)
+        printf("%c ", stack->data);
+
+    printf("\n");
 
     return 0;
 }
 
-int prints(STACK stack)
+int printStackInt(STACK stack)
 {
     if (!stack) {
         fprintf(stderr, "The stack is empty.\n");
+        return -1;
     }
-    while (stack) {
-        printf("%c ", stack->data);
 
-        if (stack->next == NULL)
-            break;
+    for (; stack; stack = stack->next)
+        printf("%d ", stack->data);
 
-        stack = stack->next;
-    }
     printf("\n");
 
     return 0;
@@ -68,38 +82,31 @@ DATA peek(STACK stack)
 
 int isEmpty(STACK stack)
 {
-    if (!stack)
-        return 1;
-    else
-        return 0;
+    return (!stack);
 }
 
-int emptyStack(STACK stack)
+static int freeStackHelper(NODE* pnode)
 {
-    while (stack) {
-        if (stack->next) {
-            free(stack->next);
-            stack = stack->next;
-        }
-    }
+    if (pnode && pnode->next)
+        freeStackHelper(pnode->next);
 
+    free(pnode);
+    return 0;
+}
+
+int freeStack(NODE** ppnode)
+{
+    freeStackHelper(*ppnode);
+    *ppnode = NULL;
     return 0;
 }
 
 NODE* reverse(NODE* head)
 {
-    NODE* pnode = head;
-
     STACK reversed = NULL;
-    while (pnode) {
-        push(&reversed, pnode->data);
 
-        if (pnode->next)
-            pnode = pnode->next;
-        else
-            break;
-        
-    }
+    for (NODE* pnode = head; pnode; pnode = pnode->next)
+        push(&reversed, pnode->data);
 
     return reversed;
 }
@@ -108,9 +115,8 @@ int length(STACK stack)
 {
     int length = 0;
 
-    for (NODE* temp = stack; temp != NULL ; temp = temp->next) {
+    for (NODE* temp = stack; temp != NULL; temp = temp->next)
         length++;
-    }
 
-    return length;  
+    return length;
 }

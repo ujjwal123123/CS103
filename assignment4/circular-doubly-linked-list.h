@@ -1,3 +1,5 @@
+// Circular doubly linked list with head and tail node
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -71,6 +73,11 @@ int addFirst(LIST* plist, DATA Data)
     return 0;
 }
 
+int isListEmpty(LIST list)
+{
+    return (list.head == NULL);
+}
+
 // Prints the list
 int print(LIST list)
 {
@@ -136,6 +143,7 @@ static DATA removeIfSingle(LIST* plist)
     plist->head = NULL;
     plist->tail = NULL;
 
+    printf("Removed single from the list: %d\n", retValue);
     return retValue;
 }
 
@@ -159,33 +167,35 @@ DATA removeFirst(LIST* plist)
         plist->tail->next = plist->head;
         free(delNode);
 
-        printf("Removed from the list: %d\n", retValue);
+        printf("Removed first from the list: %d\n", retValue);
         return retValue;
     }
 }
 
+// TODO: addLast is not working
 int addLast(LIST* plist, DATA Data)
 {
-    if (plist->head == NULL) {
-        return addIfSingle(plist, Data);
-    }
+    if (isListEmpty(*plist))
+        return addIfEmpty(plist, Data);
 
     NODE* new = newNode(plist->tail, Data, plist->head);
 
     plist->tail->next = new;
     plist->head->prev = new;
 
+    plist->tail = new;
+
     return 0;
 }
 
 int removeLast(LIST* plist)
 {
-    if (plist->head == NULL) {
+    if (isListEmpty(*plist)) {
         fprintf(stderr, "The list is already empty.\n");
         return -1;
     }
 
-    if (plist->head == plist->tail) {
+    else if (plist->head == plist->tail) {
         return removeIfSingle(plist);
     }
 
@@ -198,7 +208,26 @@ int removeLast(LIST* plist)
 
     free(removedPtr);
 
-    printf("Removed from the list: %d\n", removedData);
-
+    printf("Removed last from the list: %d\n", removedData);
     return removedData;
+}
+
+DATA getLast(LIST list)
+{
+    if (isListEmpty(list)) {
+        printf("The list is empty\n");
+        return -1;
+    }
+
+    return list.tail->data;
+}
+
+DATA getFirst(LIST list)
+{
+    if (isListEmpty(list)) {
+        printf("The list is empty\n");
+        return -1;
+    }
+
+    return list.head->data;
 }

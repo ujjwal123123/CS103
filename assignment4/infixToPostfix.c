@@ -6,7 +6,7 @@ int main()
 
     // infix = "a+b/c+d";
 
-    infix = "(a ^ b) ^ c ^ d + e * f";
+    infix = "3 + 3";
 
     convertToPostFix(infix);
-} 
+}
