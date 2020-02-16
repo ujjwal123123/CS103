@@ -7,6 +7,12 @@
         "string": "c",
         "string_view": "c",
         "ostream": "c",
-        "sstream": "c"
+        "sstream": "c",
+        "cmath": "c",
+        "random": "c",
+        "cstdio": "c",
+        "deque": "c",
+        "vector": "c",
+        "functional": "c"
     }
 }

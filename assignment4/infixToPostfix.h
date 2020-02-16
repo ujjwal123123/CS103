@@ -74,7 +74,7 @@ int charToInt(char ch)
     return ch - '0';
 }
 
-int exp(int base, int exponent)
+int my_exp(int base, int exponent)
 {
     int ans = 1;
     while (exponent--) {
@@ -99,7 +99,7 @@ int evaluateHelper(int op1, int op2, char operand)
         return op1 + op2;
         break;
     case '^':
-        return exp(op2, op1);
+        return my_exp(op2, op1);
         break;
     default:
         fprintf(stderr, "Invalid operation\n");
@@ -145,7 +145,7 @@ char* convertToPostFix(char* infix)
             while (!isEmpty(operators) && peek(operators) != '(')
                 output[len++] = pop(&operators);
 
-            // pop '(' from the stack
+            // pop '(' from the stack and do not push it into output
             pop(&operators);
         }
 

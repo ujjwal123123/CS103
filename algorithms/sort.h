@@ -61,73 +61,48 @@ int selectionSort(int* arr, int length)
     return 0;
 }
 
-// merge sorted arr1 and arr2, and return a sorted array free both arr1 and arr2
-// int* mergeSorted(int* arr1, int len1, int* arr2, int len2)
-// {
-//     int* fin = (int*)malloc((len1 + len2) * sizeof(int));
-
-//     int i = 0, j = 0, k = 0;
-//     while (i < len1 && j < len2) {
-//         if (arr1[i] < arr2[j])
-//             fin[k++] = arr1[i++];
-//         else
-//             fin[k++] = arr2[j++];
-//     }
-
-//     while (i < len1)
-//         fin[k++] = arr1[i++];
-//     while (j < len2)
-//         fin[k++] = arr2[j++];
-
-//     free(arr1);
-//     free(arr2);
-
-//     return fin;
-// }
-
-int mergeSorted(int* arr, int low, int high, int highend)
+int merge(int* arr, int* aux, int low, int high, int highend)
 {
-    int* sorted = (int*)malloc((highend - low + 1) * sizeof(int));
-
     int len1 = high - low, len2 = highend - high + 1;
 
     {
-        int i = low, j = high, k = 0;
+        int i = low, j = high, k = low;
         while (i < len1 && j < len2) {
-            if (arr[i] < arr[j])
-                sorted[k++] = arr[i++];
+            if (aux[i] < aux[j])
+                arr[k++] = aux[i++];
             else
-                sorted[k++] = arr[j++];
+                arr[k++] = aux[j++];
         }
 
         while (i < len1)
-            sorted[k++] = arr[i++];
+            arr[k++] = aux[i++];
         while (j < len2)
-            sorted[k++] = arr[j++];
+            arr[k++] = aux[j++];
     }
 
-    // copy sorted into arr
-    for (int i = 0; i < len1 + len2; i++)
-        arr[low + i] = sorted[i];
-
-    free(sorted);
+    // // copy sorted into arr
+    // for (int i = 0; i < len1 + len2; i++)
+    //     arr[i] = aux[i];
 
     return 0;
 }
 
-int mergeSortHelper(int* arr, int low, int high)
+int mergeSortHelper(int* arr, int* aux, int low, int high)
 {
-    if (low > high)
+    if (low >= high)
         return 0;
 
     int mid = (low + high) / 2;
 
-    mergeSortHelper(arr, low, mid);
-    mergeSortHelper(arr, mid + 1, high);
-    mergeSorted(arr, low, mid + 1, high);
+    mergeSortHelper(arr, aux, low, mid);
+    mergeSortHelper(arr, aux, mid + 1, high);
+    merge(arr, aux, low, mid + 1, high);
+
+    return 0;
 }
 
 int mergeSort(int* arr, int length)
 {
-    return mergeSortHelper(arr, 0, length - 1);
+    int* aux = (int*)malloc(sizeof(int) * length);
+    return mergeSortHelper(arr, aux, 0, length - 1);
 }
