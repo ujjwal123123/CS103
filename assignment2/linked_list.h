@@ -10,14 +10,19 @@ typedef struct node {
 
 typedef NODE* LIST;
 
-// The function adds a new element to the beginning of the list. This function should be passed pointer to a list
-int addFirst(LIST* plist, DATA Data)
+NODE* newNode(DATA Data, NODE* next)
 {
     NODE* new = (NODE*)malloc(sizeof(NODE));
     new->data = Data;
-    new->next = *plist;
+    new->next = next;
 
-    *plist = new;
+    return new;
+}
+
+// The function adds a new element to the beginning of the list. This function should be passed pointer to a list
+int addFirst(NODE** ppnode, DATA Data)
+{
+    *ppnode = newNode(Data, *ppnode);
 
     return 0;
 }
@@ -25,13 +30,10 @@ int addFirst(LIST* plist, DATA Data)
 // This function should be passed pointer to a list
 int addLast(LIST* plist, DATA Data)
 {
-    NODE* new = (NODE*)malloc(sizeof(NODE));
-    new->data = Data;
-    new->next = NULL;
+    NODE* new = newNode(Data, NULL);
 
-    while (*plist) {
+    while (*plist)
         plist = &((*plist)->next);
-    }
 
     *plist = new;
 
@@ -53,19 +55,19 @@ int length(LIST list)
 }
 
 // deletes first element of the list and returns its value
-DATA deleteFirst(LIST* plist)
+DATA removeFirst(NODE** ppnode)
 {
     // check if the list is empty
-    if (*plist) {
+    if (*ppnode) {
 
         // store pointer to second node in temp
-        NODE* secondNode = (*plist)->next;
-        DATA deletedData = (*plist)->next->data;
+        NODE* secondNode = (*ppnode)->next;
+        DATA deletedData = (*ppnode)->next->data;
 
         // remove first node from memory
-        free(*plist);
+        free(*ppnode);
 
-        *plist = secondNode;
+        *ppnode = secondNode;
 
         return deletedData;
 
@@ -75,7 +77,7 @@ DATA deleteFirst(LIST* plist)
     }
 }
 
-DATA deleteLast(LIST* plist)
+DATA removeLast(LIST* plist)
 {
     NODE* pNode = *plist;
 
@@ -137,7 +139,7 @@ int add(LIST* plist, DATA Data, int index)
 }
 
 // Remove node at index passed to the function
-DATA delete(LIST* plist, int index)
+DATA removeNode(LIST* plist, int index)
 {
     NODE** ppNode = plist;
 
@@ -242,22 +244,61 @@ int printReverseRecursion(NODE* pnode)
     return 0;
 }
 
-// // reverse list using recursion
-// NODE* reverseListRecursion(NODE* pnode) 
-// {
-//     // copy pasted from geeksforgeeks
+// insert an element into a sorted list such that the final list is also sorted
+int insertSorted(NODE** ppnode, DATA key)
+{
+    if ((*ppnode)->data > key)
+        return addFirst(ppnode, key);
 
-//     if (pnode == NULL)
-//         return NULL;
-//     if (pnode->next == NULL) {
-//         head = pnode;
-//         return pnode;
-//     }
+    NODE* pnode = *ppnode;
+    while (pnode->next && pnode->next->data < key)
+        pnode = pnode->next;
 
-//     NODE* temp = reverseListRecursion(pnode->next);
-//     temp->next = pnode;
-//     pnode->next = NULL
+    pnode->next = newNode(key, pnode->next);
 
-//     return pnode
+    return 0;
+}
 
-// }
+// sort the list using bubble sort
+int sortList(NODE** ppnode)
+{
+    for (NODE* i = *ppnode; i->next; i = i->next) {
+
+        // find min
+        NODE* min = i;
+        for (NODE* j = i->next; j; j = j->next)
+            if (j->data < i->data)
+                min = j;
+
+        // swap min and i
+        DATA temp = i->data;
+        i->data = min->data;
+        min->data = temp;
+    }
+
+    return 0;
+}
+
+// reverse list outplace
+LIST reverseListOutplace(LIST list)
+{
+    LIST reversed = NULL;
+    for (NODE* pnode = list; pnode; pnode = pnode->next)
+        addFirst(&reversed, pnode->data);
+
+    return reversed;
+}
+
+// TODO: how does this work
+// reverse list using recursion
+LIST reverseRecursion(LIST oldList, LIST newList)
+{
+    if (oldList == NULL)
+        return newList;
+
+    NODE* pnode = oldList;
+    oldList = oldList->next;
+    pnode->next = newList;
+
+    return reverseList(oldList, pnode);
+}
