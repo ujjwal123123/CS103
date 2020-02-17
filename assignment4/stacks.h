@@ -49,8 +49,8 @@ int printStackChar(STACK stack)
         return -1;
     }
 
-    for (; stack; stack = stack->next)
-        printf("%c ", stack->data);
+    for (NODE* node = stack; node; node = node->next)
+        printf("%c ", node->data);
 
     printf("\n");
 
@@ -64,8 +64,8 @@ int printStackInt(STACK stack)
         return -1;
     }
 
-    for (; stack; stack = stack->next)
-        printf("%d ", stack->data);
+    for (NODE* node = stack; node; node = node->next)
+        printf("%d ", node->data);
 
     printf("\n");
 
