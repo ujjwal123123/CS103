@@ -12,6 +12,14 @@ typedef struct node {
 
 typedef NODE* STACK;
 
+NODE* newNode(DATA Data, NODE* next)
+{
+    NODE* new = (NODE*)malloc(sizeof(NODE));
+    new->data = Data;
+    new->next = next;
+    return new;
+}
+
 DATA pop(STACK* head)
 {
     if (!(*head)) {
@@ -20,7 +28,6 @@ DATA pop(STACK* head)
     }
 
     DATA retValue = (*head)->data;
-
     NODE* toFree = *head;
 
     (*head) = (*head)->next;
@@ -31,12 +38,7 @@ DATA pop(STACK* head)
 
 int push(STACK* head, DATA Data)
 {
-    NODE* newNode = (NODE*)malloc(sizeof(NODE));
-    newNode->next = *head;
-    newNode->data = Data;
-
-    *head = newNode;
-    
+    *head = newNode(Data, *head);
     return 0;
 }
 
