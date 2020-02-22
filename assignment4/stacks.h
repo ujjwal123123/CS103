@@ -1,9 +1,9 @@
-// Implementation of stack with linked list
+// Implementation of stack with singly linked list
 
 #include <stdio.h>
 #include <stdlib.h>
 
-typedef char DATA;
+typedef int DATA;
 
 typedef struct node {
     DATA data;
@@ -18,6 +18,11 @@ NODE* newNode(DATA Data, NODE* next)
     new->data = Data;
     new->next = next;
     return new;
+}
+
+STACK newStack()
+{
+    return NULL;
 }
 
 DATA pop(STACK* head)
@@ -49,8 +54,8 @@ int printStackChar(STACK stack)
         return -1;
     }
 
-    for (NODE* node = stack; node; node = node->next)
-        printf("%c ", node->data);
+    for (NODE* pnode = stack; pnode; pnode = pnode->next)
+        printf("%c ", pnode->data);
 
     printf("\n");
 
@@ -64,8 +69,8 @@ int printStackInt(STACK stack)
         return -1;
     }
 
-    for (NODE* node = stack; node; node = node->next)
-        printf("%d ", node->data);
+    for (NODE* pnode = stack; pnode; pnode = pnode->next)
+        printf("%d ", pnode->data);
 
     printf("\n");
 
@@ -117,7 +122,7 @@ int length(STACK stack)
 {
     int length = 0;
 
-    for (NODE* temp = stack; temp != NULL; temp = temp->next)
+    for (NODE* pnode = stack; pnode != NULL; pnode = pnode->next)
         length++;
 
     return length;

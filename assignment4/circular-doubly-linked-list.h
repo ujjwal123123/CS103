@@ -20,7 +20,6 @@ typedef struct list {
 static NODE* newNode(NODE* prev, DATA data, NODE* next)
 {
     NODE* new = (NODE*)malloc(sizeof(NODE));
-
     new->prev = prev;
     new->data = data;
     new->next = next;
@@ -131,6 +130,10 @@ int length(LIST list)
         if (pnode == list.head)
             break;
     }
+
+    // TODO: use for loop instead of while loop
+    // for (NODE* pnode = list.head; pnode != list.tail; pnode = pnode->next)
+    //     length++;
 
     return length;
 }

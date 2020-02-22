@@ -132,7 +132,7 @@ int evaluate(char* postfix, int len)
 char* convertToPostFix(char* infix)
 {
     STACK operators = NULL;
-    char* output = (char*)malloc(sizeof(char) * 100);
+    char* postfix = (char*)malloc(sizeof(char) * 100);
     int len = 0;
 
     for (char* ch = infix; *ch != '\0'; ch++) {
@@ -143,7 +143,7 @@ char* convertToPostFix(char* infix)
 
         else if (*ch == ')') {
             while (!isEmpty(operators) && peek(operators) != '(')
-                output[len++] = pop(&operators);
+                postfix[len++] = pop(&operators);
 
             // pop '(' from the stack and do not push it into output
             pop(&operators);
@@ -151,12 +151,12 @@ char* convertToPostFix(char* infix)
 
         // deal with operands
         else if (isOperand(*ch))
-            output[len++] = *ch;
+            postfix[len++] = *ch;
 
         // if operator follows right to left associativity
         else if (associativity(*ch) == RTL) {
             while (!isEmpty(operators) && precedence(*ch) < precedence(peek(operators)))
-                output[len++] = pop(&operators);
+                postfix[len++] = pop(&operators);
 
             push(&operators, *ch);
         }
@@ -164,7 +164,7 @@ char* convertToPostFix(char* infix)
         // if operator follows left to right associativity
         else if (associativity(*ch) == LTR) {
             while (!isEmpty(operators) && precedence(*ch) <= precedence(peek(operators)))
-                output[len++] = pop(&operators);
+                postfix[len++] = pop(&operators);
 
             push(&operators, *ch);
         }
@@ -172,15 +172,15 @@ char* convertToPostFix(char* infix)
 
     // finally transfer all the leftover operators to output
     while (!isEmpty(operators))
-        output[len++] = pop(&operators);
+        postfix[len++] = pop(&operators);
 
-    printchararr(output, len);
+    printchararr(postfix, len);
 
-    evaluate(output, len);
+    evaluate(postfix, len);
 
     // free operators stack and output array
     freeStack(&operators);
-    free(output);
+    free(postfix);
 
-    return output;
+    return postfix;
 }

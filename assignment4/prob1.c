@@ -4,9 +4,7 @@
 
 int main()
 {
-    int length = 100;
-
-    STACK stack = newStack(length);
+    STACK stack = newStack();
 
     push(&stack, 5);
     push(&stack, 4);

@@ -1,4 +1,7 @@
-#include "stacks.h"
+// implement queue using two stacks
+
+// #include "stacks.h"
+#include "prob1.h"
 
 typedef struct queue {
     STACK s1;
@@ -8,8 +11,8 @@ typedef struct queue {
 QUEUE newQueue()
 {
     QUEUE* new = (QUEUE*)malloc(sizeof(QUEUE));
-    new->s1 = NULL;
-    new->s2 = NULL;
+    new->s1 = newStack();
+    new->s2 = newStack();
     return *new;
 }
 

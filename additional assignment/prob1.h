@@ -90,29 +90,6 @@ int lastOccurrence(char* str, char ch)
     return -1;
 }
 
-// TODO: for some reason, the below two function always result in segmentation fault
-
-// // Reverse a string
-// // TODO: this function is not working
-// int reverse(char* string)
-// {
-//     int strlen = length(string);
-
-//     char* start = string;
-//     char* end = string + strlen - 1;
-
-//     while (start < end) {
-//         char temp = *end;
-//         *end = *start;
-//         *start = temp;
-
-//         start++;
-//         end--;
-//     }
-
-//     return 0;
-// }
-
 // Reverse a string in place
 int reverse(char* string)
 {

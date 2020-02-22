@@ -1,3 +1,5 @@
+// implement stack using array
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -9,17 +11,23 @@ typedef struct stack {
     int filled;
 } STACK;
 
-STACK newStack(int length)
+STACK newStackLen(int length)
 {
     STACK* stack = (STACK*)malloc(sizeof(STACK));
-    stack->arr = (int*) malloc(sizeof(int) * length);
+    stack->arr = (int*)malloc(sizeof(int) * length);
     stack->capacity = length;
     stack->filled = 0;
 
     return *stack;
 }
 
-int isFull(STACK *pstack){
+STACK newStack()
+{
+    return newStackLen(100);
+}
+
+int isFull(STACK* pstack)
+{
     return (pstack->filled == pstack->capacity);
 }
 
@@ -45,14 +53,19 @@ int print(STACK stack)
     return 0;
 }
 
-int isEmpty(STACK *pstack)
+int printStackInt(STACK stack)
 {
-    return (pstack->filled == 0);
+    return print(stack);
+}
+
+int isEmpty(STACK stack)
+{
+    return (stack.filled == 0);
 }
 
 DATA pop(STACK* pstack)
 {
-    if (isEmpty(pstack)) {
+    if (isEmpty(*pstack)) {
         fprintf(stderr, "Stack underflow.\n");
         return -1;
     }

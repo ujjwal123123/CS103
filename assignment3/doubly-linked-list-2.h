@@ -35,15 +35,6 @@ int print(NODE* pnode)
         return -1;
     }
 
-    // while (pnode) {
-    //     printf("%d ", pnode->data);
-
-    //     if (pnode->next)
-    //         pnode = pnode->next;
-    //     else
-    //         break;
-    // }
-
     while (pnode) {
         printf("%d ", pnode->data);
         pnode = pnode->next;
@@ -87,15 +78,8 @@ int printBack(NODE* pnode)
 int length(NODE* pnode)
 {
     int length = 0;
-
-    while (pnode) {
+    for (; pnode; pnode = pnode->next)
         length++;
-
-        if (pnode->next)
-            pnode = pnode->next;
-        else
-            break;
-    }
 
     return length;
 }
