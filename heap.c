@@ -1,5 +1,7 @@
-#include <malloc.h>
+#include <assert.h>
+#include <limits.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 #define DEFAULT_HEAP_LENGTH 100
 
@@ -11,9 +13,9 @@ void printArray(int* array, int length)
     printf("\n");
 }
 
-typedef struct heap {
+typedef struct heap_t {
     int* array;
-    int length; //  gives the number of elements in the array
+    int length; // gives the (maximum) number of elements in the array
     int heapSize; // how many elements in the heap are stored within the array
 } HEAP;
 
@@ -39,24 +41,6 @@ static inline void swap(int* a, int* b)
     *b = temp;
 }
 
-// HEAP* newHEAP()
-// {
-//     HEAP* heap = (HEAP*)malloc(sizeof(HEAP));
-//     heap->array = (void*)malloc(sizeof(void*) * DEFAULT_HEAP_LENGTH);
-//     heap->length = DEFAULT_HEAP_LENGTH;
-//     heap->heapSize = 0;
-//     return heap;
-// }
-
-// int heightHeap(HEAP heap, int index)
-// {
-//     if (index >= heap.heapSize) {
-//         return 0;
-//     }
-
-//     return 1 + heightHeap(heap, left(index));
-// }
-
 void maxHeapify(HEAP* heap, int parent)
 {
     int l = left(parent);
@@ -79,6 +63,17 @@ void maxHeapify(HEAP* heap, int parent)
     }
 }
 
+// HEAP* newHEAP()
+// {
+//     HEAP* heap = (HEAP*)malloc(sizeof(HEAP));
+//     heap->array = (void*)malloc(sizeof(void*) * DEFAULT_HEAP_LENGTH);
+//     heap->length = DEFAULT_HEAP_LENGTH;
+//     heap->heapSize = 0;
+//     return heap;
+// }
+
+// returns a heap for a corresponding array,
+// Note: there is no newHeap function, use this instead
 HEAP* buildMaxHeap(int* array, int length)
 {
     HEAP* heap = (HEAP*)malloc(sizeof(HEAP));
@@ -105,11 +100,65 @@ void heapSort(int* array, int length)
     free(heap);
 }
 
-int main()
+// following functions are used by priority queues
+
+int heapMaximum(HEAP* heap)
 {
-    int arr[] = { 10, 0, 8, 7, 6, 100, 4, 3, 200, 1 };
+    assert(heap->heapSize > 0);
 
-    heapSort(arr, 10);
-
-    printArray(arr, 10);
+    return heap->array[0];
 }
+
+int heapExtractMaximum(HEAP* heap)
+{
+    assert(heap->heapSize > 0);
+
+    int* array = heap->array;
+    int max = array[0];
+
+    array[0] = array[--(heap->heapSize)];
+    maxHeapify(heap, 0);
+
+    return max;
+}
+
+void heapIncreaseKey(HEAP* heap, int index, int key)
+{
+    int* array = heap->array;
+
+    assert(key > array[index]);
+    array[index] = key;
+
+    while (index > 0 && array[parent(index)] < array[index]) {
+        swap(&array[index], &array[parent(index)]);
+        index = parent(index);
+    }
+}
+
+void maxHeapInsert(HEAP* heap, int key)
+{
+    assert(heap->heapSize + 1 <= heap->length);
+
+    heap->heapSize += 1;
+
+    heap->array[heap->heapSize - 1] = INT_MIN;
+
+    heapIncreaseKey(heap, heap->heapSize - 1, key);
+}
+
+void printHeap(HEAP* heap)
+{
+    for (int i = 0; i < heap->heapSize; i++)
+        printf("%d ", heap->array[i]);
+
+    printf("\n");
+}
+
+// int main()
+// {
+//     int arr[] = { 10, 0, 8, 7, 6, 100, 4, 3, 200, 1 };
+
+//     heapSort(arr, 10);
+
+//     printArray(arr, 10);
+// }
