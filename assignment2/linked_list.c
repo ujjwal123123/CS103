@@ -16,9 +16,12 @@ int main()
     print(list1);
     printf("\n\n%d\n\n", length(list1));
 
-    LIST reversed = reverseListOutplace(list1);
+    printUsingRecursion(list1);
+    printReverseRecursion(list1);
 
-    print(reversed);
+    // LIST reversed = reverseListOutplace(list1);
+
+    // print(reversed);
 
     return 0;
 }

@@ -18,9 +18,9 @@ static NODE* newNode(void* Data, NODE* next)
 
 static int addIfEmpty(LIST* plist, void* data)
 {
-    NODE* ppnode = *plist;
-    ppnode = newNode(data, NULL);
+    *plist = newNode(data, NULL);
 
+    printStudent(data);
     return 0;
 }
 
@@ -43,9 +43,7 @@ int addFirst(LIST* plist, void* data)
     if (!plist)
         return addIfEmpty(plist, data);
 
-    NODE* new = newNode(data, *plist);
-
-    *plist = new;
+    *plist = newNode(data, *plist);
 
     return 0;
 }

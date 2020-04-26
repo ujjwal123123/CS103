@@ -1,4 +1,4 @@
-#include "generic-list.h"
+
 
 typedef struct student {
     int roll;
@@ -18,5 +18,10 @@ STUDENT* newStudent(int roll, char* name, int marks)
 void printStudent(void* data)
 {
     STUDENT* pstudent = (STUDENT*)data;
-    printf("[%d]: %s [%d]\n", pstudent->marks, pstudent->name, pstudent->roll);
+    printf("[%d]: %s [%d]\n", pstudent->roll, pstudent->name, pstudent->marks);
+}
+
+int compareStudent(STUDENT* ps1, STUDENT* ps2)
+{
+    return (ps1->roll - ps2->roll);
 }

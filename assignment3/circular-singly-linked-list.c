@@ -2,19 +2,20 @@
 
 int main()
 {
-    LIST list = { NULL, NULL };
+    LIST newlist = { NULL, NULL };
+    LIST list2 = { NULL, NULL };
 
-    addFirst(&list, 5);
-    addFirst(&list, 4);
-    addFirst(&list, 3);
-    addFirst(&list, 2);
-    addFirst(&list, 1);
+    addFirst(&newlist, 5);
+    addFirst(&newlist, 4);
+    addFirst(&newlist, 3);
+    addFirst(&newlist, 2);
+    addFirst(&newlist, 1);
 
-    printList(list);
+    printList(newlist);
 
-    printf("Removed form the list: %d\n", removeLast(&list));
+    printf("Removed form the list: %d\n", removeLast(&newlist));
 
-    printList(list);
+    printList(newlist);
 
     return 0;
 }

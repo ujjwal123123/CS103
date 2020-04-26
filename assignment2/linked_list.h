@@ -216,19 +216,12 @@ int printUsingRecursion(LIST list)
     // TODO: this function can only be called at most once else indices are printed incorrectly
     static int index = 0;
 
-    if (list) {
-        printf("[%d]: %d  (%p) (%p)\n", index++, list->data, &list, &(list->data));
+    if (!list)
+        return 0;
 
-        if (list->next) {
-            list = list->next;
+    printf("[%d]: %d  (%p) (%p)\n", index++, list->data, &list, &(list->data));
 
-            return printUsingRecursion(list);
-        } else {
-            return 0;
-        }
-    }
-
-    return 0;
+    return printUsingRecursion(list->next);
 }
 
 // print list in reverse order using recursion
@@ -259,7 +252,7 @@ int insertSorted(NODE** ppnode, DATA key)
     return 0;
 }
 
-// sort the list using bubble sort
+// sort the list using selection sort
 int sortList(NODE** ppnode)
 {
     for (NODE* i = *ppnode; i->next; i = i->next) {
@@ -300,5 +293,5 @@ LIST reverseRecursion(LIST oldList, LIST newList)
     oldList = oldList->next;
     pnode->next = newList;
 
-    return reverseList(oldList, pnode);
+    return reverseRecursion(oldList, pnode);
 }
